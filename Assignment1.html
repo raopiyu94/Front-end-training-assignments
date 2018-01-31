@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>String Transfer</title>
+</head>
+
+<body>
+<h1>String Transfer</h1>
+<input id="id1" type="text"/>
+<input id="id2" type="text"/>
+<input type="button" id="btn1" value=">>"/>
+<input type="button" id="btn2" value="||"/>
+<input type="button" id="btn3" value="<<"/>
+
+<script>
+ // to get the value in the text box
+document.getElementById('btn1').addEventListener('click', fn1);
+document.getElementById('btn2').addEventListener('click', fn2);
+document.getElementById('btn3').addEventListener('click', fn3);
+var inter1;
+
+function fn1(){
+clearInterval(inter1);
+inter1 = setInterval(function(){
+var x = document.getElementById('id1').value;
+document.getElementById('id2').value += x.substring(0,1);
+document.getElementById('id1').value = x.substring(1);
+},1000);
+}
+
+function fn2(){
+clearInterval(inter1);
+}
+
+function fn3(){
+clearInterval(inter1);
+inter1 = setInterval(function(){
+var y = document.getElementById('id2').value;
+document.getElementById('id1').value = y.substring(y.length-1) + document.getElementById('id1').value;
+document.getElementById('id2').value = y.substring(0,y.length-1);
+},1000);
+}
+
+</script>
+</body>
+
+</html>
