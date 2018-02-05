@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> User Details </title>
+</head>
+
+<body>
+
+	<!-- Credits: Sharmila and Sachin-->
+	
+    <h2> User Details </h2>
+
+    <form id='userForm'>
+        <div>
+            <label> First Name: </label>
+            <input type='text' id='firstname' placeholder='First Name'>
+        </div>
+        <br>
+
+        <div>
+            <label> Last Name: </label>
+            <input type='text' id='lastname' placeholder='Last Name'>
+        </div>
+        <br>
+		
+		<div>
+            <label> Email: </label>
+            <input type='text' id='email' placeholder='Email'>
+        </div>
+        <br>
+        
+		<div>
+            <label> Organization: </label>
+            <input type='text' id='organization' placeholder='Organization'>
+        </div>
+        <br>
+
+        <div>
+            <label> Phone Number: </label>
+            <input type='text' id='phone' placeholder='Phone Number'>
+        </div>
+        <br>
+
+        <div id='genders'>
+            <label> Gender: </label>
+            <input type='radio' id='r1' name='gender' value='Male'> Male
+            <input type='radio' id='r2' name='gender' value='Female'> Female
+        </div>
+        <br>
+
+        <input type='button' value='Submit' onclick=saveUserDetails();>
+
+        <!--<div id='userResults'></div>-->
+
+    </form>
+    <hr>
+
+    <h2> User Details Results </h2>
+    <div>
+        <table border='1px' id='tbl' width='70%' style='border-collapse:collapse'>
+            <tr id='tbl_rows'>
+                <th><b>First Name</b></th>
+                <th><b>Last Name</b></th>
+                <th><b>Email</b></th>
+				<th><b>Organization</b></th>
+                <th><b>Phone Number</b></th>
+                <th><b>Gender</b></th>
+            </tr>
+        </table>
+    </div>
+    <script>
+	
+
+/**
+ * Displays data present in the local storage on load of the application.
+ */
+window.onload = function() {
+    users = JSON.parse(localStorage.getItem('users'));
+
+    if (users == null) {
+        console.log("Users not present");
+        //  users = [];
+    } else {
+        // for (var i = 0; i < users.length; i++) {
+        getData(users);
+        // }
+    }
+}
+
+var fncntr = 0;
+var lncntr = 0;
+var emailcntr = 0;
+var orgcntr = 0;
+var phncntr = 0;
+var gendercntr = 0;
+var userObj = 0;
+
+/**
+ * Validates and Saves the user details entered in the local storage.
+ */
+function saveUserDetails() {
+    var isValid = true;
+
+    var firstname = document.getElementById('firstname').value;
+    if (firstname == null || firstname == '') {
+        if (fncntr < 1) {
+            document.getElementById('firstname').insertAdjacentHTML('afterend', "<span id='fn' style='color:red'>!Required Field</span>");
+            fncntr++;
+        }
+        isValid = false;
+    } else {
+        var el = document.getElementById('fn');
+        if (el) {
+            el.parentNode.removeChild(fn);
+        }
+    }
+
+    var lastname = document.getElementById('lastname').value;
+    if (lastname == null || lastname == '') {
+        if (lncntr < 1) {
+            document.getElementById('lastname').insertAdjacentHTML('afterend', "<span id='ln' style='color:red'>!Required Field</span>");
+            lncntr++;
+        }
+        isValid = false;
+    } else {
+        var el = document.getElementById('ln');
+        if (el) {
+            el.parentNode.removeChild(ln);
+        }
+    }
+
+    var email = document.getElementById('email').value;
+    if (email == null || email == '') {
+        if (emailcntr < 1) {
+            document.getElementById('email').insertAdjacentHTML('afterend', "<span id='eml' style='color:red'>!Required Field</span>");
+            emailcntr++;
+        }
+        isValid = false;
+    } else {
+        var el = document.getElementById('eml');
+        if (el) {
+            el.parentNode.removeChild(eml);
+        }
+    }
+
+    var organization = document.getElementById('organization').value;
+    if (organization == null || organization == '') {
+        if (orgcntr < 1) {
+            document.getElementById('organization').insertAdjacentHTML('afterend', "<span id='org' style='color:red'>!Required Field</span>");
+            orgcntr++;
+        }
+        isValid = false;
+    } else {
+        var el = document.getElementById('org');
+        if (el) {
+            el.parentNode.removeChild(org);
+        }
+    }
+	
+	var phone = document.getElementById('phone').value;
+    if (phone == null || phone == '') {
+        if (phncntr < 1) {
+            document.getElementById('phone').insertAdjacentHTML('afterend', "<span id='phn' style='color:red'>!Required Field</span>");
+            phncntr++;
+        }
+        isValid = false;
+    } else {
+        var el = document.getElementById('phn');
+        if (el) {
+            el.parentNode.removeChild(phn);
+        }
+    }
+
+    if (document.getElementById('r1').checked) {
+        var gender = document.getElementById('r1').value;
+    } else {
+        var gender = document.getElementById('r2').value;
+    }
+
+    if (r1.checked == false && r2.checked == false) {
+        if (gendercntr < 1) {
+            document.getElementById('genders').insertAdjacentHTML('beforeend', "<span id='gend' style='color:red'>!Required Field</span>");
+            gendercntr++;
+        }
+        isValid = false;
+    } else if (r1.checked) {
+        var el = document.getElementById('gend');
+        if (el) {
+            el.parentNode.removeChild(el);
+        }
+
+    } else {
+        var el = document.getElementById('gend');
+        if (el) {
+            el.parentNode.removeChild(el);
+        }
+    }
+
+    if (isValid == false) {
+        return false;
+    }
+	var users = [];
+    var userObj = {
+        firstname: "hello",
+        lastname: lastname,
+        email: email,
+        organization: organization,
+		phone: phone,
+        gender: gender
+    };
+	console.log(userObj);
+    users.push(userObj);
+    // getData(userObj);
+    getData(users);
+    localStorage.setItem('users', JSON.stringify(users));
+    userForm.reset();
+}
+
+/**
+ * 
+ * @param {Array} users : Displays the details of the users stored in local storage.
+ */
+
+function getData(users) {
+    var htm = '';
+    for (var i = 0; i < users.length; i++) {
+        htm += '<tr>';
+        htm += '<td>' + users[i].firstname + '</td>';
+        htm += '<td>' + users[i].lastname + '</td>';
+        htm += '<td>' + users[i].email + '</td>';
+        htm += '<td>' + users[i].organization + '</td>';
+		htm += '<td>' + users[i].phone + '</td>';
+        htm += '<td>' + users[i].gender + '</td>';
+        htm += '</tr>';
+    }
+    document.getElementById('tbl_rows').insertAdjacentHTML('afterend', htm);
+}
+
+	</script>
+</body>
+
+</html>
