@@ -49,7 +49,7 @@
         </div>
         <br>
 
-        <input type='button' value='Submit' onclick=saveUserDetails();>
+        <input type='button' value='Submit' onclick=saveUserDetails(users);>
 
         <!--<div id='userResults'></div>-->
 
@@ -75,19 +75,21 @@
 /**
  * Displays data present in the local storage on load of the application.
  */
-window.onload = function() {
+ 
+	window.onload = function() {
+	
     users = JSON.parse(localStorage.getItem('users'));
 
-    if (users == null) {
+    if (users === null) {
         console.log("Users not present");
-        //  users = [];
+        users = [];
     } else {
-        // for (var i = 0; i < users.length; i++) {
-        getData(users);
-        // }
+        for (var i = 0; i < users.length; i++) {
+        getData(users[i]);
+        }
     }
 }
-
+var users = [];
 var fncntr = 0;
 var lncntr = 0;
 var emailcntr = 0;
@@ -100,6 +102,8 @@ var userObj = 0;
  * Validates and Saves the user details entered in the local storage.
  */
 function saveUserDetails() {
+
+	//var users =[];
     var isValid = true;
 
     var firstname = document.getElementById('firstname').value;
@@ -200,7 +204,7 @@ function saveUserDetails() {
     if (isValid == false) {
         return false;
     }
-	var users = [];
+	//var users = [];
     var userObj = {
         firstname: firstname,
         lastname: lastname,
@@ -210,10 +214,12 @@ function saveUserDetails() {
         gender: gender
     };
 	console.log(userObj);
+	
     users.push(userObj);
-    // getData(userObj);
-    getData(users);
-    localStorage.setItem('users', JSON.stringify(users));
+    
+    getData(userObj);
+    
+	localStorage.setItem('users', JSON.stringify(users));
     userForm.reset();
 }
 
@@ -222,18 +228,29 @@ function saveUserDetails() {
  * @param {Array} users : Displays the details of the users stored in local storage.
  */
 
-function getData(users) {
-    var htm = '';
-    for (var i = 0; i < users.length; i++) {
-        htm += '<tr>';
-        htm += '<td>' + users[i].firstname + '</td>';
-        htm += '<td>' + users[i].lastname + '</td>';
-        htm += '<td>' + users[i].email + '</td>';
-        htm += '<td>' + users[i].organization + '</td>';
-		htm += '<td>' + users[i].phone + '</td>';
-        htm += '<td>' + users[i].gender + '</td>';
-        htm += '</tr>';
-    }
+function getData(userObj) {
+
+    var htm = '<tr>';
+	
+	for(key in userObj){
+	
+	if(userObj.hasOwnProperty(key)){
+		console.log(userObj[key]);
+		
+		htm += '<td>'+userObj[key]+'</td>';
+	}
+}
+    <!-- for (var i = 0; i < users.length; i++) { -->
+        <!-- htm += '<tr>'; -->
+        <!-- htm += '<td>' + users[i].firstname + '</td>'; -->
+        <!-- htm += '<td>' + users[i].lastname + '</td>'; -->
+        <!-- htm += '<td>' + users[i].email + '</td>'; -->
+        <!-- htm += '<td>' + users[i].organization + '</td>'; -->
+		<!-- htm += '<td>' + users[i].phone + '</td>'; -->
+        <!-- htm += '<td>' + users[i].gender + '</td>'; -->
+        <!-- htm += '</tr>'; -->
+    <!-- } -->
+	//console.log(htm);
     document.getElementById('tbl_rows').insertAdjacentHTML('afterend', htm);
 }
 
